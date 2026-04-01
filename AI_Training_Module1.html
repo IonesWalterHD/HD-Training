@@ -1,4 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI at Work – Foundations</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f5f5f5;
+    color: #323130;
+    overflow-x: hidden;
+  }
+
+  header {
+    background: #005a9e;
+    color: white;
+    padding: 18px 28px;
+  }
+
+  header h1 {
+    margin: 0;
+    font-size: 22px;
+  }
+
+  header p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    opacity: 0.9;
+  }
+
+  main {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 0 16px;
+    transform: scale(0.67);
+    transform-origin: top center;
+  }
+
+  .card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 6px 14px rgba(0,0,0,.08);
+  }
+
+  .visual img {
+    max-width: 100%;
+    max-height: 38vh;
+    object-fit: contain;
+    border-radius: 6px;
+    margin: 12px auto;
+    display: block;
+  }
+
+  .scenario {
+    background: #f3f9ff;
+    border-left: 4px solid #005a9e;
+    padding: 12px;
+    margin: 16px 0;
+    font-weight: 600;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #eaeaea;
+  }
+
+  .correct {
+    color: #107c10;
+    font-weight: 600;
+    margin-top: 12px;
+  }
+
+  .warning {
+    color: #a4262c;
+    font-weight: 600;
+    margin-top: 12px;
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>AI at Work</h1>
+  <p>Using AI Effectively and Responsibly</p>
+</header>
+
+<main>
+  <div class="card" id="content"></div>
+</main>
+
 <script>
+/* ========================
+   COURSE DATA (STABLE)
+======================== */
 const course = [
   {
     type: "content",
@@ -41,47 +149,53 @@ let step = 0;
 let score = 0;
 let answered = false;
 
+/* ========================
+   RENDER ENGINE (GUARDED)
+======================== */
 function render() {
   const c = document.getElementById("content");
-  const s = course[step];
-  answered = false;
   window.scrollTo(0, 0);
 
-  if (!s) {
+  /* ✅ HARD GUARD */
+  if (step >= course.length) {
     showCompletion();
     return;
   }
 
+  const s = course[step];
+  answered = false;
+
   let html = "<h2>" + s.title + "</h2>";
 
   if (s.image) {
-    html += '<div class="visual"><img src="' + s.image + '" alt=""></div>';
+    html += '<div class="visual"><img src="' + s.image + '"></div>';
   }
 
   if (s.type === "question") {
     html += "<p><strong>" + s.question + "</strong></p>";
     for (let i = 0; i < s.options.length; i++) {
-      html += '<button onclick="answer(' + i + ')">' + s.options[i].label + "</button>";
+      html += '<button onclick="answer(' + i + ')">' + s.options[i].label + '</button>';
     }
   } else {
     html += "<p>" + s.text + "</p>";
-    html += '<button onclick="next()">Continue</button>';
-  }
-
-  if (s.type === "scenario") {
-    html += '<div class="scenario">Scenario: ' + s.text + "</div>";
+    if (s.type === "scenario") {
+      html += '<div class="scenario">Scenario: ' + s.text + "</div>";
+    }
     html += '<button onclick="next()">Continue</button>';
   }
 
   c.innerHTML = html;
 }
 
+/* ========================
+   INTERACTIONS
+======================== */
 function answer(index) {
   if (answered) return;
   answered = true;
 
-  const s = course[step];
   const c = document.getElementById("content");
+  const s = course[step];
 
   if (s.options[index].correct) {
     score++;
@@ -98,20 +212,23 @@ function next() {
   render();
 }
 
+/* ========================
+   COMPLETION LOGIC
+======================== */
 function showCompletion() {
   const c = document.getElementById("content");
-  const total = course.filter(x => x.type === "question").length;
+  const totalQuestions = course.filter(s => s.type === "question").length;
 
-  if (score === total) {
+  if (score === totalQuestions) {
     c.innerHTML =
       "<h2>Module completed</h2>" +
-      "<p>You answered " + score + " out of " + total + " questions correctly.</p>" +
+      "<p>You answered " + score + " out of " + totalQuestions + " questions correctly.</p>" +
       "<p>✅ You have successfully completed this training module.</p>";
   } else {
     c.innerHTML =
       "<h2>Review required</h2>" +
-      "<p>You answered " + score + " out of " + total + " questions correctly.</p>" +
-      "<p>❌ All questions must be answered correctly to complete the module.</p>" +
+      "<p>You answered " + score + " out of " + totalQuestions + " questions correctly.</p>" +
+      "<p>❌ You must answer all questions correctly to complete this module.</p>" +
       '<button onclick="restart()">Retry module</button>';
   }
 }
@@ -122,5 +239,12 @@ function restart() {
   render();
 }
 
+/* ========================
+   START
+======================== */
 render();
 </script>
+
+</body>
+</html>
+``
