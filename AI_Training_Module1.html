@@ -1,133 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>AI at Work – Foundations</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: #f5f5f5;
-      color: #323130;
-      overflow-x: hidden;
-    }
-
-    header {
-      background: #005a9e;
-      color: white;
-      padding: 18px 28px;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 22px;
-    }
-
-    header p {
-      margin: 4px 0 0;
-      font-size: 13px;
-      opacity: 0.9;
-    }
-
-    /* === FRAME REDUCED BY ~1/3 === */
-    main {
-      max-width: 600px;
-      margin: 30px auto;
-      padding: 0 16px;
-      transform: scale(0.67);
-      transform-origin: top center;
-    }
-
-    .card {
-      background: #ffffff;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
-    }
-
-    .visual img {
-      max-width: 100%;
-      max-height: 38vh;
-      object-fit: contain;
-      border-radius: 6px;
-      margin: 14px auto;
-      display: block;
-    }
-
-    .scenario {
-      background: #f3f9ff;
-      border-left: 4px solid #005a9e;
-      padding: 12px;
-      margin: 16px 0;
-      font-weight: 600;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 12px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      background: #f9f9f9;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #eaeaea;
-    }
-
-    .correct {
-      color: #107c10;
-      font-weight: 600;
-      margin-top: 12px;
-    }
-
-    .warning {
-      color: #a4262c;
-      font-weight: 600;
-      margin-top: 12px;
-    }
-  </style>
-</head>
-
-<body>
-
-<header>
-  <h1>AI at Work</h1>
-  <p>Using AI Effectively and Responsibly</p>
-</header>
-
-<main>
-  <div class="card" id="content"></div>
-</main>
-
 <script>
 const course = [
   {
     type: "content",
     title: "AI Is Already Part of Your Work",
-    text:
-      "AI tools are increasingly used to draft, summarise, and improve content. " +
-      "This short course helps you use them safely and effectively.",
+    text: "AI tools are increasingly used to draft, summarise, and improve content. This short course helps you use them safely and effectively.",
     image: "Images/hero_ai_at_work.png"
   },
   {
     type: "scenario",
     title: "Scenario",
-    text:
-      "You’re preparing a presentation under time pressure. " +
-      "You ask an AI tool to explain your business strategy.",
+    text: "You’re preparing a presentation under time pressure. You ask an AI tool to explain your business strategy.",
     image: "Images/scenario_presentation_deadline.png"
   },
   {
     type: "content",
     title: "Key Insight",
-    text:
-      "AI does not understand your business or goals. " +
-      "It predicts what sounds correct based on patterns — not comprehension.",
+    text: "AI does not understand your business or goals. It predicts what sounds correct based on patterns — not comprehension.",
     image: "Images/mental_model_human_vs_ai.png"
   },
   {
@@ -144,8 +32,7 @@ const course = [
   {
     type: "content",
     title: "Key Takeaway",
-    text:
-      "If AI wrote it, you own it. AI assists with drafting, but accountability always stays with you.",
+    text: "If AI wrote it, you own it. AI assists with drafting, but accountability always stays with you.",
     image: "Images/ownership_responsibility.png"
   }
 ];
@@ -165,26 +52,25 @@ function render() {
     return;
   }
 
-  let html = `<h2>${s.title}</h2>`;
+  let html = "<h2>" + s.title + "</h2>";
 
   if (s.image) {
-    html += `<div class="visual"><img src="${s.image}"}
+    html += '<div class="visual"><img src="' + s.image + '" alt=""></div>';
+  }
 
   if (s.type === "question") {
-    html += `<p><strong>${s.question}</strong></p>`;
-    s.options.forEach((opt, i) => {
-      html += `<button onclick="answer(${i})">${opt.label}</button>`;
-    });
-  } else {
-    html += `<p>${s.text}</p>`;
-    if (s.type !== "scenario") {
-      html += `<button onclick="next()">Continue</button>`;
+    html += "<p><strong>" + s.question + "</strong></p>";
+    for (let i = 0; i < s.options.length; i++) {
+      html += '<button onclick="answer(' + i + ')">' + s.options[i].label + "</button>";
     }
+  } else {
+    html += "<p>" + s.text + "</p>";
+    html += '<button onclick="next()">Continue</button>';
   }
 
   if (s.type === "scenario") {
-    html += `<div class="scenario">Scenario: ${s.text}</div>
-             <button onclick="next()">Continue</button>`;
+    html += '<div class="scenario">Scenario: ' + s.text + "</div>";
+    html += '<button onclick="next()">Continue</button>';
   }
 
   c.innerHTML = html;
@@ -196,16 +82,15 @@ function answer(index) {
 
   const s = course[step];
   const c = document.getElementById("content");
-  const chosen = s.options[index];
 
-  if (chosen.correct) {
+  if (s.options[index].correct) {
     score++;
-    c.innerHTML += `<div class="correct">✅ Correct. AI output must always be reviewed.</div>`;
+    c.innerHTML += '<div class="correct">✅ Correct. AI output must always be reviewed.</div>';
   } else {
-    c.innerHTML += `<div class="warning">⚠ This can introduce errors or misinformation.</div>`;
+    c.innerHTML += '<div class="warning">⚠ This can introduce errors or misinformation.</div>';
   }
 
-  c.innerHTML += `<button onclick="next()">Continue</button>`;
+  c.innerHTML += '<button onclick="next()">Continue</button>';
 }
 
 function next() {
@@ -215,21 +100,19 @@ function next() {
 
 function showCompletion() {
   const c = document.getElementById("content");
-  const totalQuestions = course.filter(s => s.type === "question").length;
+  const total = course.filter(x => x.type === "question").length;
 
-  if (score === totalQuestions) {
-    c.innerHTML = `
-      <h2>Module completed</h2>
-      <p>You answered ${score} out of ${totalQuestions} questions correctly.</p>
-      <p>✅ You have successfully completed this training module.</p>
-    `;
+  if (score === total) {
+    c.innerHTML =
+      "<h2>Module completed</h2>" +
+      "<p>You answered " + score + " out of " + total + " questions correctly.</p>" +
+      "<p>✅ You have successfully completed this training module.</p>";
   } else {
-    c.innerHTML = `
-      <h2>Review required</h2>
-      <p>You answered ${score} out of ${totalQuestions} questions correctly.</p>
-      <p>❌ All questions must be answered correctly to complete the module.</p>
-      <button onclick="restart()">Retry module</button>
-    `;
+    c.innerHTML =
+      "<h2>Review required</h2>" +
+      "<p>You answered " + score + " out of " + total + " questions correctly.</p>" +
+      "<p>❌ All questions must be answered correctly to complete the module.</p>" +
+      '<button onclick="restart()">Retry module</button>';
   }
 }
 
@@ -241,7 +124,3 @@ function restart() {
 
 render();
 </script>
-
-</body>
-</html>
-``
