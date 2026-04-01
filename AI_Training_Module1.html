@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>AI at Work – Foundations</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f5f5f5;
+  color: #323130;
+}
+
+header {
+  background: #005a9e;
+  color: white;
+  padding: 24px 36px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 26px;
+}
+
+header p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+main {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 32px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.visual img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin: 20px 0;
+}
+
+.scenario {
+  background: #f3f9ff;
+  border-left: 4px solid #005a9e;
+  padding: 16px;
+  margin: 24px 0;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #eaeaea;
+}
+
+.correct {
+  color: #107c10;
+  font-weight: 600;
+}
+
+.warning {
+  color: #a4262c;
+  font-weight: 600;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>AI at Work</h1>
+  <p>Using AI Effectively and Responsibly</p>
+</header>
+
+<main>
+  <div class="card" id="content"></div>
+</main>
+
+<script>
+const course = [
+  {
+    title: "AI Is Already Part of Your Work",
+    text: "AI tools are increasingly used to draft, summarise, and improve content. This short course helps you use them safely and effectively.",
+    image: "Images/hero_ai_at_work.png"
+  },
+  {
+    title: "Scenario",
+    text: "You’re preparing a presentation under time pressure. You ask an AI tool to explain your business strategy.",
+    image: "Images/scenario_presentation_deadline.png",
+    scenario: true
+  },
+  {
+    title: "Key Insight",
+    text: "AI does not understand your business or goals. It predicts what sounds correct based on patterns — not comprehension.",
+    image: "Images/mental_model_human_vs_ai.png"
+  },
+  {
+    title: "Decision Time",
+    question: "What should you do next?",
+    image: "Images/decision_review_vs_publish.png",
+    options: [
+      { label: "Use it as-is — it sounds professional", correct: false },
+      { label: "Review, validate, and adjust the content", correct: true },
+      { label: "Ask AI to make it even more confident", correct: false }
+    ]
+  },
+  {
+    title: "Key Takeaway",
+    text: "If AI wrote it, you own it. AI assists with drafting, but accountability always stays with you.",
+    image: "Images/ownership_responsibility.png"
+  }
+];
+
+let step = 0;
+
+function render() {
+  const container = document.getElementById("content");
+  const screen = course[step];
+
+  if (!screen) {
+    container.innerHTML = `
+      <h2>Module completed</h2>
+      <p>You have completed this training module.</p>
+    `;
+    return;
+  }
+
+  let html = `<h2>${screen.title}</h2>`;
+
+  if (screen.image) {
+    html += `<div class="visual"><img src="${screen.image}" alt if (screen.text) {
+    html += `<p>${screen.text}</p>`;
+  }
+
+  if (screen.scenario) {
+    html += `<div class="scenario"><strong>Scenario:</strong> ${screen.text}</div>`;
+  }
+
+  if (screen.question) {
+    html += `<p><strong>${screen.question}</strong></p>`;
+    screen.options.forEach(opt => {
+      html += `<button onclick="answer(${opt.correct})">${opt.label}</button>`;
+    });
+  } else {
+    html += `<button onclick="next()">Continue</button>`;
+  }
+
+  container.innerHTML = html;
+}
+
+function next() {
+  step++;
+  render();
+}
+
+function answer(correct) {
+  const container = document.getElementById("content");
+  if (correct) {
+    container.innerHTML += `
+      <p class="correct">✅ Correct. AI output must always be reviewed.</p>
+      <button onclick="next()">Continue</button>
+    `;
+  } else {
+    container.innerHTML += `
+      <p class="warning">⚠ This can introduce errors or misinformation.</p>
+    `;
+  }
+}
+
+render();
+</script>
+
+</body>
+</html>
+``
